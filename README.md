@@ -14,6 +14,22 @@ PCB with esp32
 ![Capture](https://github.com/user-attachments/assets/400b17b4-2393-4028-81d6-9d8e0ed5f4ea)
 
 
+
+esp32mini
+
+<img width="1411" height="935" alt="image" src="https://github.com/user-attachments/assets/e7245fe4-6fa8-4ee3-9471-256f72aae2dc" />
+
+https://docs.espressif.com/projects/esp-hardware-design-guidelines/en/latest/esp32/schematic-checklist.html
+https://docs.platformio.org/en/latest/boards/espressif32/wemos_d1_mini32.html#hardware
+https://community.openmqttgateway.com/t/esp32-mini-kit-pinout-is-there-a-mapping-table-to-lolin-esp32-pinout/2320
+
+
+<img width="340" height="229" alt="image" src="https://github.com/user-attachments/assets/0446e497-8dff-4714-abad-54383b6dff5b" />
+
+buck
+<img width="537" height="322" alt="image" src="https://github.com/user-attachments/assets/ede287e8-38bd-49da-863f-3e904946d7bf" />
+
+
 Hardware design knowledge .
 1. While designing with ethernet 10/100/1000 speed we need to keep the following in mind as below.
 2. Ethernet needs esd protection
