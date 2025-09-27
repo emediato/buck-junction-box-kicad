@@ -1,5 +1,5 @@
 ## junction box kicad
-pcb with esp32
+PCB with esp32
 
 # Schematics
 
