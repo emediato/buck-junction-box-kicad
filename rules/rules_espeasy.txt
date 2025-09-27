@@ -1,0 +1,48 @@
+on System#Boot do
+  gpio,17,1
+  gpio,2,0
+  timerSet,1,1
+  timerSet,3,1
+  timerSet,5,30
+endon
+
+On Rules#Timer=5 do  //When Timer1 expires, do
+ Publish %sysname%/IP,%ip%
+ Publish %sysname%/rssi,%rssi%
+  timerSet,5,30       //Resets the Timer 1 for another 30 seconds
+endon
+
+on WiFi#Connected do
+ timerSet,1,0
+ timerSet,2,1
+endon
+
+on MQTT#Connected do
+ Publish %sysname%/IP,%ip%
+ timerSet,3,0
+ timerSet,4,1
+endon
+
+on Rules#Timer=1 do  //When Timer1 expires, do
+  Pulse,17,0,100
+  timerSet,1,1       //Set Timer 2 for the next event in 1 second
+endon
+
+on Rules#Timer=2 do  //When Timer1 expires, do
+  Pulse,17,0,100
+  Pulse,17,1,100
+  Pulse,17,0,100
+  timerSet,2,2       //Set Timer 2 for the next event in 1 second
+endon
+
+on Rules#Timer=4 do  //When Timer1 expires, do
+  Pulse,2,1,100
+  Pulse,2,0,100
+  Pulse,2,1,100
+  timerSet,4,2       //Set Timer 2 for the next event in 1 second
+endon
+
+on Rules#Timer=3 do  //When Timer1 expires, do
+  Pulse,2,1,100
+  timerSet,3,1        //Set Timer 2 for the next event in 1 second
+endon
