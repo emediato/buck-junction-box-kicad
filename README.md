@@ -1,6 +1,7 @@
-# junction_box_kicad
+## junction box kicad
 pcb with esp32
 
+# Schematics
 
 ![schematics](https://github.com/user-attachments/assets/bfc248f8-e326-4082-8cb7-8f14c0574b9b)
 
@@ -8,7 +9,10 @@ pcb with esp32
 ![schematicospB](https://github.com/user-attachments/assets/29c07a3e-795b-4e6d-af77-6db05fbfbee0)
 
 
-# 
+# power plant
+
+![Capture](https://github.com/user-attachments/assets/400b17b4-2393-4028-81d6-9d8e0ed5f4ea)
+
 
 Hardware design knowledge .
 1. While designing with ethernet 10/100/1000 speed we need to keep the following in mind as below.
