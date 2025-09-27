@@ -1,0 +1,97 @@
+sudo apt install influxdb
+sudo systemctl unmask influxdb
+sudo systemctl enable influxdb
+sudo systemctl start influxdb
+
+
+https://pimylifeup.com/raspberry-pi-influxdb/
+https://www.seemoo.tu-darmstadt.de/team/mschulz/
+
+echo "deb [signed-by=/usr/share/keyrings/influxdb-archive-keyring.gpg] https://repos.influxdata.com/debian stable main" | sudo tee /etc/apt/sources.list.d/influxdb.list
+deb [signed-by=/usr/share/keyrings/influxdb-archive-keyring.gpg] https://repos.influxdata.com/debian stable main
+
+
+
+sudo systemctl start influxdb
+influx
+CREATEDATABASE piTESLA
+USE piTESLA
+INSERT temperature,location=tesla1 value=20
+INSERT current,location=tesla2 value=3
+
+
+grafana
+          tesla
+          tesla
+
+
+https://grafana.com/grafana/download?edition=oss
+user grafana pswd grafana
+grant all privileges on piTESLA to grafana
+
+sudo systemctl daemon-reload
+sudo systemctl start grafana-server
+sudo systemctl status grafana-server
+
+
+momo@raspberrypi:~ $ influx -database 'piTESLA' -host 192.168.0.18 -port '8086'
+Connected to http://192.168.0.18:8086 version 1.8.10
+InfluxDB shell version: 1.8.10
+> USE piTESLA
+Using database piTESLA
+> create user grafana with password 'grafana' with all privileges
+> grant all privileges on home to grafana
+ERR: database not found: home
+> grant all privileges on piTESLA to grafana
+> grant all privileges on piTESLA to grafana
+
+
+**************************************************************************************************************
+https://raspberrypi-guide.github.io/networking/set-up-static-ip-address
+https://help.domotz.com/tips-tricks/configure-vlans-on-raspberry-pi/
+sudo nano /etc/dhcpcd.conf
+
+**************************************************************************************************************
+https://nodered.org/docs/getting-started/raspberrypi
+
+to start node-red
+node-red
+
+
+
+**************************************************************************************************************
+check ports 
+sudo ss -ltnp
+
+mqqt
+user? tesla
+sudo mosquitto_passwd -c /etc/mosquitto/passwd
+
+sudo nmap localhost
+
+
+
+sudo nano /etc/mosquitto.conf
+
+*********************************
+per_listener_settings true
+
+pid_file /run/mosquitto/mosquitto.pid
+
+persistence true
+persistence_location /var/lib/mosquitto/
+log_dest file /var/log/mosquitto/mosquitto.log
+
+include_dir /etc/mosquitto/conf.d
+allow_anonymous false
+listener 1883 
+password_file /etc/mosquitto/passwd
+
+************************************
+
+sudo systemctl restart mosquitto
+sudo systemctl status mosquitto
+
+
+temp-mqtt
+current-mqtt
