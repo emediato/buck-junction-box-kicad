@@ -2,6 +2,14 @@
 pcb with esp32
 
 
+![schematics](https://github.com/user-attachments/assets/bfc248f8-e326-4082-8cb7-8f14c0574b9b)
+
+
+![schematicospB](https://github.com/user-attachments/assets/29c07a3e-795b-4e6d-af77-6db05fbfbee0)
+
+
+# 
+
 Hardware design knowledge .
 1. While designing with ethernet 10/100/1000 speed we need to keep the following in mind as below.
 2. Ethernet needs esd protection
