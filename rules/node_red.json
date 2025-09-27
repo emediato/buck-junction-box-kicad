@@ -1,0 +1,991 @@
+[
+    {
+        "id": "83bbdd5e62199541",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3b99b1606ac7a304",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "9acb831161b0ad83",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "piTESLA",
+        "name": "piTESLA",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "1.8-flux",
+        "url": "http://localhost:8086",
+        "timeout": "10",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "ee10f0ca279d3aa3",
+        "type": "mqtt-broker",
+        "name": "mqtt-tesla",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "2ff2a476.a6d2ec",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "test 1.8 flux",
+        "usetls": false,
+        "tls": "d50d0c9f.31e858",
+        "influxdbVersion": "1.8-flux",
+        "url": "https://localhost:8086",
+        "rejectUnauthorized": false
+    },
+    {
+        "id": "d50d0c9f.31e858",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false
+    },
+    {
+        "id": "bcce0a62e5736429",
+        "type": "mqtt in",
+        "z": "83bbdd5e62199541",
+        "name": "temperature",
+        "topic": "temp-mqtt",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ee10f0ca279d3aa3",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 570,
+        "y": 440,
+        "wires": [
+            [
+                "59630ce66a41edf6",
+                "45fe1853fe24e556",
+                "9ae3145d72668819"
+            ]
+        ]
+    },
+    {
+        "id": "59630ce66a41edf6",
+        "type": "influxdb in",
+        "z": "83bbdd5e62199541",
+        "influxdb": "9acb831161b0ad83",
+        "name": "",
+        "query": "",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "organisation",
+        "x": 870,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "030aeb0c58a3d179",
+        "type": "inject",
+        "z": "83bbdd5e62199541",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 280,
+        "y": 500,
+        "wires": [
+            [
+                "8cd20c076aee2f6f"
+            ]
+        ]
+    },
+    {
+        "id": "8cd20c076aee2f6f",
+        "type": "delay",
+        "z": "83bbdd5e62199541",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 460,
+        "y": 500,
+        "wires": [
+            [
+                "59630ce66a41edf6",
+                "45fe1853fe24e556"
+            ]
+        ]
+    },
+    {
+        "id": "45fe1853fe24e556",
+        "type": "influxdb-line-protocol",
+        "z": "83bbdd5e62199541",
+        "name": "temperature",
+        "addTimestamp": false,
+        "defaultTypeMapping": "float",
+        "typeMappings": [],
+        "x": 670,
+        "y": 500,
+        "wires": [
+            [
+                "59630ce66a41edf6",
+                "9ae3145d72668819"
+            ]
+        ]
+    },
+    {
+        "id": "604045b56a92232a",
+        "type": "comment",
+        "z": "83bbdd5e62199541",
+        "name": "functions txt",
+        "info": "var gpio_pin = 12; //D6in esp\nvar espeasy_device_name = \"MonitorSolar-5\";\nvar pulse_duration = \"1000\";\n\n\nvar gpio_state = msg.payload;\nmsg.topic =String() + \"/cmd\";\nmsg.payload = \"Pulse,\" + String(gpio_pin) + \", \" (gpio_state ? \"1\" ? \"0\");\n\nreturn msg;\n\n\n\n\n\n\n\nvar gpio_pin = 12; //D6in esp\nvar espeasy_device_name = \"MonitorSolar-5\";\n\n\nvar gpio_state = msg.payload;\nmsg.topic =String() + \"/cmd\";\nmsg.payload = \"GPIOtoggle, \" + String(gpio_pin) ;\n\nreturn msg;\n\n",
+        "x": 290,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "9ae3145d72668819",
+        "type": "influxdb out",
+        "z": "83bbdd5e62199541",
+        "influxdb": "9acb831161b0ad83",
+        "name": "",
+        "measurement": "temperature",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "piTESLA",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 870,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "8de021660151a73a",
+        "type": "mqtt out",
+        "z": "83bbdd5e62199541",
+        "name": "temperature",
+        "topic": "temp-mqtt",
+        "qos": "1",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ee10f0ca279d3aa3",
+        "x": 530,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "fb0b3ff8236d56fc",
+        "type": "function",
+        "z": "83bbdd5e62199541",
+        "name": "function 2",
+        "func": "\nvar gpio_pin = 12; //D6in esp\nvar espeasy_device_name = \"MonitorSolar-5\";\n\n\nvar gpio_state = msg.payload;\nmsg.topic = String() + \"/cmd\";\nmsg.payload = \"GPIOtoggle, \" + String(gpio_pin);\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 80,
+        "wires": [
+            [
+                "8de021660151a73a"
+            ]
+        ]
+    },
+    {
+        "id": "f8e3cb02f77c6190",
+        "type": "inject",
+        "z": "83bbdd5e62199541",
+        "name": "TRUE",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/30 0-23 * * *",
+        "once": true,
+        "onceDelay": "60",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 120,
+        "y": 140,
+        "wires": [
+            [
+                "2107afcba7bcffe0"
+            ]
+        ]
+    },
+    {
+        "id": "6cab663e21d994d2",
+        "type": "mqtt out",
+        "z": "83bbdd5e62199541",
+        "name": "current",
+        "topic": "current-mqtt",
+        "qos": "1",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ee10f0ca279d3aa3",
+        "x": 540,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "598b4a395b09b34d",
+        "type": "function",
+        "z": "83bbdd5e62199541",
+        "name": "function 4",
+        "func": "//var gpio_pin = 12; //D6in esp\nvar espeasy_device_name = \"MonitorSolar-5\";\nvar gpio_pin = 1;\n\nvar gpio_state = msg.payload;\nmsg.topic = String() + \"/cmd\";\nmsg.payload = \"GPIOtoggle, \" + String(gpio_pin);\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 140,
+        "wires": [
+            [
+                "6cab663e21d994d2"
+            ]
+        ]
+    },
+    {
+        "id": "4093447b747e036a",
+        "type": "toggle",
+        "z": "83bbdd5e62199541",
+        "name": "",
+        "onOffTopic": "",
+        "onValue": "",
+        "onType": "str",
+        "offValue": "",
+        "offType": "str",
+        "toggleTopic": "",
+        "toggleValue": "",
+        "toggleType": "str",
+        "passOnOff": "",
+        "x": 250,
+        "y": 80,
+        "wires": [
+            [
+                "fb0b3ff8236d56fc"
+            ]
+        ]
+    },
+    {
+        "id": "e9bc588dd4f76ec3",
+        "type": "mqtt out",
+        "z": "83bbdd5e62199541",
+        "name": "temperature",
+        "topic": "temp-mqtt",
+        "qos": "1",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ee10f0ca279d3aa3",
+        "x": 1070,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "4d7d0aeea3fb561c",
+        "type": "function",
+        "z": "83bbdd5e62199541",
+        "name": "function 5",
+        "func": "\nvar gpio_pin = 12; //D6in esp\nvar espeasy_device_name = \"MonitorSolar-5\";\n\n\nvar gpio_state = msg.payload;\nmsg.topic = String() + \"/cmd\";\nmsg.payload = \"GPIOtoggle, \" + String(gpio_pin);\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 260,
+        "wires": [
+            [
+                "e9bc588dd4f76ec3"
+            ]
+        ]
+    },
+    {
+        "id": "2107afcba7bcffe0",
+        "type": "toggle",
+        "z": "83bbdd5e62199541",
+        "name": "",
+        "onOffTopic": "",
+        "onValue": "true",
+        "onType": "bool",
+        "offValue": "false",
+        "offType": "bool",
+        "toggleTopic": "",
+        "toggleValue": "true",
+        "toggleType": "bool",
+        "passOnOff": "always",
+        "x": 250,
+        "y": 160,
+        "wires": [
+            [
+                "598b4a395b09b34d"
+            ]
+        ]
+    },
+    {
+        "id": "084505d30397a7b9",
+        "type": "inject",
+        "z": "83bbdd5e62199541",
+        "name": "FALSE",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/30 0-23 * * *",
+        "once": true,
+        "onceDelay": "60",
+        "topic": "",
+        "payload": "false",
+        "payloadType": "bool",
+        "x": 120,
+        "y": 180,
+        "wires": [
+            [
+                "2107afcba7bcffe0"
+            ]
+        ]
+    },
+    {
+        "id": "f6dfee5a68b99d9f",
+        "type": "inject",
+        "z": "83bbdd5e62199541",
+        "name": "TRUE",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/30 0-23 * * *",
+        "once": true,
+        "onceDelay": "60",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 120,
+        "y": 40,
+        "wires": [
+            [
+                "4093447b747e036a"
+            ]
+        ]
+    },
+    {
+        "id": "ae6e34c77e2b9101",
+        "type": "inject",
+        "z": "83bbdd5e62199541",
+        "name": "FALSE",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/30 0-23 * * *",
+        "once": true,
+        "onceDelay": "60",
+        "topic": "",
+        "payload": "false",
+        "payloadType": "bool",
+        "x": 120,
+        "y": 80,
+        "wires": [
+            [
+                "4093447b747e036a"
+            ]
+        ]
+    },
+    {
+        "id": "343d0989078195d0",
+        "type": "function",
+        "z": "83bbdd5e62199541",
+        "name": "function 1",
+        "func": "var gpio_pin = 12; //D6in esp\nvar espeasy_device_name = \"MonitorSolar-5\";\nvar pulse_duration = \"1000\";\n\n\nvar gpio_state = msg.payload;\nmsg.topic = String() + \"/cmd\";\nmsg.payload = \"Pulse,\" + String(gpio_pin) + \", \"(gpio_state ? \"1\" ? \"0\");\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 200,
+        "wires": [
+            [
+                "2be044fd9830a65a"
+            ]
+        ]
+    },
+    {
+        "id": "2269f85110b9a11b",
+        "type": "clock-generator",
+        "z": "83bbdd5e62199541",
+        "name": "CLK",
+        "topic": "",
+        "period": "10",
+        "output": "1",
+        "init": false,
+        "x": 750,
+        "y": 200,
+        "wires": [
+            [
+                "343d0989078195d0"
+            ],
+            [
+                "343d0989078195d0"
+            ]
+        ]
+    },
+    {
+        "id": "2be044fd9830a65a",
+        "type": "mqtt out",
+        "z": "83bbdd5e62199541",
+        "name": "temperature",
+        "topic": "temp-mqtt",
+        "qos": "1",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ee10f0ca279d3aa3",
+        "x": 1070,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "cd8035cac22fefdf",
+        "type": "inject",
+        "z": "83bbdd5e62199541",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/30 0-23 * * *",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 610,
+        "y": 200,
+        "wires": [
+            [
+                "2269f85110b9a11b"
+            ]
+        ]
+    },
+    {
+        "id": "43490a867f850383",
+        "type": "inject",
+        "z": "83bbdd5e62199541",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/30 0-23 * * *",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 610,
+        "y": 260,
+        "wires": [
+            [
+                "4d7d0aeea3fb561c"
+            ]
+        ]
+    },
+    {
+        "id": "db1eb4ee64db7ab2",
+        "type": "inject",
+        "z": "83bbdd5e62199541",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/30 0-23 * * *",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 610,
+        "y": 320,
+        "wires": [
+            [
+                "658fd752e55f6a54"
+            ]
+        ]
+    },
+    {
+        "id": "3f5894981bbc44ee",
+        "type": "inject",
+        "z": "83bbdd5e62199541",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/30 0-23 * * *",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 710,
+        "y": 360,
+        "wires": [
+            [
+                "0149dce6c542a81f"
+            ]
+        ]
+    },
+    {
+        "id": "658fd752e55f6a54",
+        "type": "clock-generator",
+        "z": "83bbdd5e62199541",
+        "name": "CLK",
+        "topic": "",
+        "period": "10",
+        "output": "1",
+        "init": false,
+        "x": 750,
+        "y": 320,
+        "wires": [
+            [
+                "2ca14fdd3f0d3b11"
+            ],
+            [
+                "2ca14fdd3f0d3b11"
+            ]
+        ]
+    },
+    {
+        "id": "2ca14fdd3f0d3b11",
+        "type": "function",
+        "z": "83bbdd5e62199541",
+        "name": "function 6",
+        "func": "\nvar gpio_pin = 12; //D6in esp\nvar espeasy_device_name = \"MonitorSolar-5\";\n\n\nvar gpio_state = msg.payload;\nmsg.topic = String() + \"/cmd\";\nmsg.payload = \"GPIOtoggle, \" + String(gpio_pin);\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 320,
+        "wires": [
+            [
+                "5ad674635d924957"
+            ]
+        ]
+    },
+    {
+        "id": "0149dce6c542a81f",
+        "type": "function",
+        "z": "83bbdd5e62199541",
+        "name": "function 7",
+        "func": "\nvar gpio_pin = 12; //D6in esp\nvar espeasy_device_name = \"MonitorSolar-5\";\n\n\nvar gpio_state = msg.payload;\nmsg.topic = String() + \"/cmd\";\nmsg.payload = \"GPIOtoggle, \" + String(gpio_pin);\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 360,
+        "wires": [
+            [
+                "5d7944667ce68221"
+            ]
+        ]
+    },
+    {
+        "id": "5ad674635d924957",
+        "type": "mqtt out",
+        "z": "83bbdd5e62199541",
+        "name": "current",
+        "topic": "current-mqtt",
+        "qos": "1",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ee10f0ca279d3aa3",
+        "x": 1060,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "5d7944667ce68221",
+        "type": "mqtt out",
+        "z": "83bbdd5e62199541",
+        "name": "current",
+        "topic": "current-mqtt",
+        "qos": "1",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ee10f0ca279d3aa3",
+        "x": 1020,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "e9c3356741ca3bd5",
+        "type": "rpi-gpio in",
+        "z": "83bbdd5e62199541",
+        "name": "",
+        "pin": "",
+        "intype": "tri",
+        "debounce": "25",
+        "read": false,
+        "bcm": true,
+        "x": 70,
+        "y": 340,
+        "wires": [
+            [
+                "fbfd7b85d11ae112"
+            ]
+        ]
+    },
+    {
+        "id": "fbfd7b85d11ae112",
+        "type": "function",
+        "z": "83bbdd5e62199541",
+        "name": "function 3",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 220,
+        "y": 340,
+        "wires": [
+            [
+                "654300831ed7f69b"
+            ]
+        ]
+    },
+    {
+        "id": "654300831ed7f69b",
+        "type": "mqtt out",
+        "z": "83bbdd5e62199541",
+        "name": "temperature",
+        "topic": "temp-mqtt",
+        "qos": "1",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ee10f0ca279d3aa3",
+        "x": 370,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "21bb12128dc7a471",
+        "type": "influxdb in",
+        "z": "83bbdd5e62199541",
+        "influxdb": "9acb831161b0ad83",
+        "name": "",
+        "query": "",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "organisation",
+        "x": 890,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9fea8d84bb6e89e5",
+        "type": "inject",
+        "z": "83bbdd5e62199541",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 300,
+        "y": 740,
+        "wires": [
+            [
+                "1290c71511e0aa90"
+            ]
+        ]
+    },
+    {
+        "id": "1290c71511e0aa90",
+        "type": "delay",
+        "z": "83bbdd5e62199541",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 480,
+        "y": 740,
+        "wires": [
+            [
+                "21bb12128dc7a471",
+                "6b94b2daabd99583"
+            ]
+        ]
+    },
+    {
+        "id": "6b94b2daabd99583",
+        "type": "influxdb-line-protocol",
+        "z": "83bbdd5e62199541",
+        "name": "current",
+        "addTimestamp": false,
+        "defaultTypeMapping": "float",
+        "typeMappings": [],
+        "x": 680,
+        "y": 740,
+        "wires": [
+            [
+                "21bb12128dc7a471",
+                "ebb5744df98c6fef"
+            ]
+        ]
+    },
+    {
+        "id": "ebb5744df98c6fef",
+        "type": "influxdb out",
+        "z": "83bbdd5e62199541",
+        "influxdb": "9acb831161b0ad83",
+        "name": "",
+        "measurement": "current",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "piTESLA",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 880,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "8af2db27e6f2fc2f",
+        "type": "mqtt in",
+        "z": "83bbdd5e62199541",
+        "name": "",
+        "topic": "current-mqtt",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ee10f0ca279d3aa3",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 490,
+        "y": 680,
+        "wires": [
+            [
+                "6b94b2daabd99583",
+                "21bb12128dc7a471",
+                "ebb5744df98c6fef"
+            ]
+        ]
+    },
+    {
+        "id": "dd32f825.863798",
+        "type": "influxdb in",
+        "z": "3b99b1606ac7a304",
+        "influxdb": "2ff2a476.a6d2ec",
+        "name": "",
+        "query": "from(bucket: \"test/autogen\") |> range(start: -1d, stop: now())",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "my-org",
+        "x": 380,
+        "y": 80,
+        "wires": [
+            [
+                "17314806.c732c8"
+            ]
+        ]
+    },
+    {
+        "id": "17314806.c732c8",
+        "type": "debug",
+        "z": "3b99b1606ac7a304",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 640,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "eadef241.cf6fd",
+        "type": "inject",
+        "z": "3b99b1606ac7a304",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 200,
+        "wires": [
+            [
+                "dd32f825.863798"
+            ]
+        ]
+    }
+]
