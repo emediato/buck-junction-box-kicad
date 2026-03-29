@@ -83,7 +83,23 @@ Mínimo carregamento da fonte (sensor ou estágio anterior)
 1. Não carrega o sensor (baixa interação com a fonte do sinal)
 1. Maior suscetibilidade a ruído
 
+## tools 
 
+● Soldering iron
+AiXun T3A
+I solder at 350C.
+● Power supply
+Miniware MDP-XP
+● Hotplate
+Miniware MHP50 - B5 (ceramic coating)
+● Solder
+0.71mm resin core solder. Tin and lead 60/40.
+● Flux
+Chip Quik SMD291
+● Solder wick
+3.0mm GOOT Desolder Braid
+● Hot air
+Atten ST-862D
    
 ## books
 
